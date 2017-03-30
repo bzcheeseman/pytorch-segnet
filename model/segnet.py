@@ -67,7 +67,7 @@ class SegNet(nn.Module):
 
         self.decoder_4 = nn.Sequential(
             nn.Conv2d(64, 3, 7, padding=3),
-            nn.BatchNorm2d(64)
+            nn.BatchNorm2d(3)
         )  # fourth group
 
         self.conv_classifier = nn.Conv2d(64, 11, 1)
