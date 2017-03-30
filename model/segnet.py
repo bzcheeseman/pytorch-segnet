@@ -66,7 +66,7 @@ class SegNet(nn.Module):
         )  # third group
 
         self.decoder_4 = nn.Sequential(
-            nn.Conv2d(64, 64, 7, padding=3),
+            nn.Conv2d(64, 3, 7, padding=3),
             nn.BatchNorm2d(64)
         )  # fourth group
 
@@ -97,7 +97,7 @@ class SegNet(nn.Module):
         x = self.unpool_4(x, indices_1, output_size=size_1)
         x = self.decoder_4(x)
 
-        x = Funct.log_softmax(x)  # going to use NLLLoss
+        x = Funct.softmax(x)  # going to use NLLLoss - figure this out
 
         return x
 
@@ -112,16 +112,16 @@ if __name__ == "__main__":
     train_dataset = DataLoader(
         SegNetData("../data/train", transform=t.Compose([t.ToTensor()]),
                    target_transform=t.Compose([t.ToTensor()])),
-        batch_size=10, shuffle=True, num_workers=4)
+        batch_size=4, shuffle=True, num_workers=4)
     test_dataset = DataLoader(
         SegNetData("../data/test", transform=t.Compose([t.ToTensor()]),
                    target_transform=t.Compose([t.ToTensor()])),
-        batch_size=10, shuffle=True, num_workers=4)
+        batch_size=4, shuffle=True, num_workers=4)
 
     model = SegNet()
     model.train()
 
-    criterion = nn.NLLLoss()
+    criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     max_epochs = 10
