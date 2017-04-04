@@ -97,7 +97,7 @@ class SegNet(nn.Module):
         x = self.unpool_4(x, indices_1, output_size=size_1)
         x = self.decoder_4(x)
 
-        x = Funct.log_softmax(x)  # going to use NLLLoss - figure this out
+        x = Funct.softmax(x)  # going to use NLLLoss - figure this out
 
         return x
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     model = SegNet()
     model.train()
 
-    criterion = nn.NLLLoss2d()
+    criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     max_epochs = 10
