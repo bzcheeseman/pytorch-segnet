@@ -96,8 +96,9 @@ class SegNet(nn.Module):
 
         x = self.unpool_4(x, indices_1, output_size=size_1)
         x = self.decoder_4(x)
+        # x = self.conv_classifier(x)
 
-        x = Funct.softmax(x)  # going to use NLLLoss - figure this out
+        x = Funct.softmax(x)
 
         return x
 
@@ -136,6 +137,7 @@ if __name__ == "__main__":
 
             model.zero_grad()
             outputs = model(inputs)
+            print(outputs.size())
 
             loss = criterion(outputs, labels)
             loss.backward()
